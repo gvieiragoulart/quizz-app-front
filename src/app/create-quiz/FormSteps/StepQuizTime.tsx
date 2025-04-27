@@ -30,3 +30,13 @@ export default function StepQuizTime({ onChange }: Props) {
     </>
   );
 }
+
+export function ValidateTime(time: Time) {
+  if (time.hour < 0 || time.minute < 0) {
+    return "O tempo deve ser maior que 0.";
+  }
+  if (time.hour > 5 || time.minute > 59) {
+    return "O tempo deve ser menor que 5 horas.";
+  }
+  return null;
+}

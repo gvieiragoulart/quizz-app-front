@@ -18,3 +18,13 @@ export default function StepQuizDescription({ value, onChange }: Props) {
     </>
   );
 }
+
+export function ValidateDescription(description: string) {
+  if (description.length < 10) {
+    return "A descrição deve ter pelo menos 10 caracteres.";
+  }
+  if (description.length > 200) {
+    return "A descrição deve ter no máximo 200 caracteres.";
+  }
+  return null;
+}

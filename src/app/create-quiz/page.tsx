@@ -9,6 +9,10 @@ import StepQuizTime from "./FormSteps/StepQuizTime";
 import StepQuestionForm from "./FormSteps/StepQuestionForm";
 import StepNavigation from "./StepNavigation";
 import { QuizInfo, Question } from "./types/quiz";
+import { ValidateName } from "./FormSteps/StepQuizName";
+import { ValidateDescription } from "./FormSteps/StepQuizDescription";
+import { ValidateTime } from "./FormSteps/StepQuizTime";
+import { Questions, Steps } from "./enum";
 
 export default function QuizForm() {
   const router = useRouter();
@@ -27,8 +31,25 @@ export default function QuizForm() {
     correctAnswer: 0,
   });
 
+  const isRegisteringName = currentStep === Steps.NAME;
+  const isRegisteringDescription = currentStep === Steps.DESCRIPTION;
+  const isRegisteringTime = currentStep === Steps.TIME;
+  const                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       isRegisteringQuestion = currentStep >= Steps.QUESTION && currentStep < Questions.MAX;
+
   const handleNext = () => {
-    if (currentStep >= 3) {
+    if (isRegisteringName) {
+      ValidateName(quizInfo.name);
+    }
+
+    if (isRegisteringDescription) {
+      ValidateDescription(quizInfo.description);
+    }
+
+    if (isRegisteringTime) {
+      ValidateTime(quizInfo.timePerQuestion);
+    }
+
+    if (isRegisteringQuestion) {
       setQuizInfo(prev => ({
         ...prev,
         questions: [...prev.questions, tempQuestion],
@@ -50,21 +71,21 @@ export default function QuizForm() {
   return (
     <section className="w-full h-screen flex items-center justify-center bg-white">
       <div className="w-full max-w-md p-8 rounded-lg shadow-md">
-        {currentStep === 0 && (
+        {isRegisteringName && (
           <StepQuizName 
             value={quizInfo.name} 
             onChange={(name) => setQuizInfo({ ...quizInfo, name })} />
         )}
-        {currentStep === 1 && (
+        {isRegisteringDescription && (
           <StepQuizDescription 
             value={quizInfo.description} 
             onChange={(description) => setQuizInfo({ ...quizInfo, description })} />
         )}
-        {currentStep === 2 && (
+        {isRegisteringTime && (
           <StepQuizTime 
             onChange={(time) => setQuizInfo({ ...quizInfo, timePerQuestion: time })} />
         )}
-        {currentStep >= 3 && (
+        {isRegisteringQuestion && (
           <StepQuestionForm
             question={tempQuestion}
             setQuestion={setTempQuestion}
@@ -73,7 +94,7 @@ export default function QuizForm() {
 
         <StepNavigation
           currentStep={currentStep}
-          totalSteps={53}
+          totalSteps={Questions.MAX}
           onNext={handleNext}
           onSubmit={handleSubmit}
         />

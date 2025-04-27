@@ -19,3 +19,13 @@ export default function StepQuizName({ value, onChange }: Props) {
     </>
   );
 }
+
+export function ValidateName(name: string) {
+  if (name.length < 3) {
+    return "O nome deve ter pelo menos 3 caracteres.";
+  }
+  if (name.length > 50) {
+    return "O nome deve ter no máximo 50 caracteres.";
+  }
+  return null;
+}
